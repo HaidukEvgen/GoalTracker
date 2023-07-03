@@ -1,0 +1,45 @@
+﻿<Window x:Class="GoalTracker.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GoalTracker"
+        xmlns:models="clr-namespace:GoalTracker.Models"
+        xmlns:converters="clr-namespace:GoalTracker.Converters"
+        mc:Ignorable="d"
+        Title="Goal Tracker" Height="729" Width="800" Background="#FFC0EFFF" FontFamily="Century Gothic" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Menu FontFamily="Century Gothic" FontSize="18">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New" InputGestureText="Ctrl+N" />
+                <MenuItem Header="_Open" InputGestureText="Ctrl+O" />
+                <Separator />
+                <MenuItem Header="_Save" InputGestureText="Ctrl+S" />
+                <MenuItem Header="Save _As" InputGestureText="Ctrl+Shift+S" />
+                <Separator />
+                <MenuItem Header="_Exit" InputGestureText="Alt+F4" />
+            </MenuItem>
+        </Menu>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="Goal Tracker" FontFamily="Century Gothic" FontSize="48" FontWeight="Bold"></TextBlock>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel x:Name="GoalsStackPanel">
+                <ItemsControl ItemsSource="{Binding Goals}"
+                              ItemTemplate="{StaticResource GoalTemplate}" />
+            </StackPanel>
+        </ScrollViewer>
+        <Button x:Name="AddGoalButton" Grid.Row="2" Content="Add Goal" FontSize="24" Command="{Binding ShowGoalWindowCommand}"/>
+    </Grid>
+</Window>
