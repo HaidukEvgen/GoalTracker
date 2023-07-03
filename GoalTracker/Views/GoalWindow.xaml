@@ -1,0 +1,49 @@
+﻿<Window x:Class="GoalTracker.Views.GoalWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GoalTracker"
+        mc:Ignorable="d"
+        Title="GoalWindow" Height="774" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="Add Goal" FontFamily="Century Gothic" FontSize="48" FontWeight="Bold"></TextBlock>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="150"/>
+            </Grid.RowDefinitions>
+            <StackPanel >
+                <TextBlock FontWeight="Bold">What do you want to achieve?</TextBlock>
+                <TextBlock>Write a wish that motivates you and add a picture. Start writing even without knowing how to achieve it yet</TextBlock>
+                <TextBlock FontWeight="Light">Formulate your desire and write it down</TextBlock>
+                <TextBox Text="{Binding Goal.Title, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <Button Content="Select Picture" Command="{Binding SelectPictureCommand}"/>
+                <TextBlock FontWeight="Bold">When do you expect to achieve it?</TextBlock>
+                <TextBlock>Recommended terms are 3 month to 3 years. You want it now, not when you are old, don't you?</TextBlock>
+                <TextBlock FontWeight="Light">I want to achieve my goal in</TextBlock>
+                <DatePicker SelectedDate="{Binding Goal.Deadline}"/>
+                <TextBlock FontWeight="Bold">How can you measure the result?</TextBlock>
+                <TextBlock>You need metrics to track progress. How can you measure it? How do you know the goal is achieved?</TextBlock>
+                <TextBlock FontWeight="Light">How much I want</TextBlock>
+                <TextBox Text="{Binding Goal.Aim, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <TextBlock FontWeight="Light">Unit of measure</TextBlock>
+                <TextBox Text="{Binding Goal.UnitOfMeasure, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <TextBlock FontWeight="Light">Description of criteria</TextBlock>
+                <TextBox Text="{Binding Goal.Description, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            </StackPanel>
+            <ContentControl Grid.Row="1" Content="{Binding Goal}" ContentTemplate="{StaticResource GoalTemplate}" />
+        </Grid>
+        <Button x:Name="SaveGoalButton" Grid.Row="2" Content="Save Goal" FontSize="24" Command="{Binding SaveGoalCommand}"/>
+    </Grid>
+</Window>
