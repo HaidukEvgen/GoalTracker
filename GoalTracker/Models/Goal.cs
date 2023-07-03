@@ -18,7 +18,17 @@ namespace GoalTracker.Models
 
         public int CurrentAchievement { get; set; } = 0;
 
-        public double Progress => (double)CurrentAchievement * 100 / Aim ;
+        public double Progress
+        {
+            get
+            {
+                if (Aim == 0)
+                {
+                    return 0.0;
+                }
+                return (double)CurrentAchievement * 100 / Aim;
+            }
+        }
 
         public bool IsValid()
         {
