@@ -2,8 +2,43 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:GoalTracker"
-             StartupUri="MainWindow.xaml">
+             xmlns:converters="clr-namespace:GoalTracker.Converters"
+             xmlns:models="clr-namespace:GoalTracker.Models"
+             StartupUri="/Views/MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <converters:DaysLeftConverter x:Key="DaysLeftConverter" />
+            <converters:AimAchievementConverter x:Key="AimAchievementConverter" />
+            <converters:ImageConverter x:Key="ImageConverter" />
+
+            <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="0,5" />
+            </Style>
+
+            <Style TargetType="ProgressBar">
+                <Setter Property="Margin" Value="0,5" />
+            </Style>
+
+            <DataTemplate x:Key="GoalTemplate" DataType="{x:Type models:Goal}">
+                <StackPanel>
+                    <Image Source="{Binding Image, Converter={StaticResource ImageConverter}}" />
+                    <TextBlock Text="{Binding Deadline, Converter={StaticResource DaysLeftConverter}}" Style="{StaticResource {x:Type TextBlock}}" />
+                    <TextBlock Text="{Binding Title}" Style="{StaticResource {x:Type TextBlock}}" />
+                    <TextBlock Text="{Binding Description}" Style="{StaticResource {x:Type TextBlock}}" />
+                    <ProgressBar Value="{Binding Progress, Mode=OneWay}" Minimum="0" Maximum="100" Style="{StaticResource {x:Type ProgressBar}}" />
+                    <TextBlock Style="{StaticResource {x:Type TextBlock}}">
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource AimAchievementConverter}">
+                                <Binding Path="CurrentAchievement" />
+                                <Binding Path="Aim" />
+                                <Binding Path="UnitOfMeasure" />
+                                <Binding Path="Progress" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </StackPanel>
+            </DataTemplate>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
