@@ -38,8 +38,22 @@
                     <TextBox.Text>
                         <Binding Path="Goal.Title"
                                  UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validation:StringTextBoxValidation/>
+                            </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <Trigger Property="Validation.HasError" Value="True">
+                                    <Setter Property="ToolTip"
+                                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                                                    Path=(Validation.Errors)/ErrorContent}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
                 </TextBox>
                 <Button Content="Select Picture" Command="{Binding SelectPictureCommand}"/>
                 <TextBlock FontWeight="Bold">
@@ -89,8 +103,22 @@
                     <TextBox.Text>
                         <Binding Path="Goal.UnitOfMeasure"
                                  UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validation:StringTextBoxValidation/>
+                            </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <Trigger Property="Validation.HasError" Value="True">
+                                    <Setter Property="ToolTip"
+                                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                                                    Path=(Validation.Errors)/ErrorContent}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
                 </TextBox>
                 <TextBlock FontWeight="Light">
                     Description of criteria
@@ -99,11 +127,27 @@
                     <TextBox.Text>
                         <Binding Path="Goal.Description"
                                  UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validation:StringTextBoxValidation/>
+                            </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <Trigger Property="Validation.HasError" Value="True">
+                                    <Setter Property="ToolTip"
+                                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                                                    Path=(Validation.Errors)/ErrorContent}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
                 </TextBox>
             </StackPanel>
-            <ContentControl Grid.Row="1" Content="{Binding Goal}" ContentTemplate="{StaticResource GoalTemplate}" />
+            <ScrollViewer Grid.Row="1">
+                <ContentControl Grid.Row="1" Content="{Binding Goal, UpdateSourceTrigger=PropertyChanged}" ContentTemplate="{StaticResource GoalTemplate}" />
+            </ScrollViewer>
         </Grid>
         <Button x:Name="SaveGoalButton" Grid.Row="2" Content="Save Goal" FontSize="24" Command="{Binding SaveGoalCommand}"/>
     </Grid>

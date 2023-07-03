@@ -4,6 +4,21 @@ namespace GoalTracker.Models
 {
     public class Goal
     {
+        public Goal()
+        {
+            
+        }
+        public Goal(Goal goal, byte[] imageData)
+        {
+            Title = goal.Title;
+            Deadline = goal.Deadline;
+            Image = imageData;
+            Description = goal.Description;
+            Aim = goal.Aim;
+            UnitOfMeasure = goal.UnitOfMeasure;
+            CurrentAchievement = goal.CurrentAchievement;
+        }
+
         public string Title { get; set; }
 
         public DateTime? Deadline { get; set; }

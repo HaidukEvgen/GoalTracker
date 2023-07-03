@@ -2,10 +2,7 @@
 using GoalTracker.Models;
 using GoalTracker.MVVM;
 using Microsoft.Win32;
-using System;
-using System.ComponentModel;
 using System.IO;
-using System.Windows.Media.Imaging;
 
 namespace GoalTracker.ViewModels
 {
@@ -36,6 +33,7 @@ namespace GoalTracker.ViewModels
                 MainViewModel.Goals[MainViewModel.Goals.IndexOf(MainViewModel.SelectedGoal)] = Goal;
             }
         }
+
         private void SelectPicture()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -44,9 +42,9 @@ namespace GoalTracker.ViewModels
             if (openFileDialog.ShowDialog() == true)
             {
                 byte[] imageData = File.ReadAllBytes(openFileDialog.FileName);
-                Goal.Image = imageData;
+                Goal = new Goal(Goal, imageData);
+                OnPropertyChanged(nameof(Goal));
             }
         }
-
     }
 }
