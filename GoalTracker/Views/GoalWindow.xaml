@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GoalTracker"
+        xmlns:validation="clr-namespace:GoalTracker.Validations"
         mc:Ignorable="d"
         Title="GoalWindow" Height="774" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
@@ -24,23 +25,83 @@
                 <RowDefinition Height="150"/>
             </Grid.RowDefinitions>
             <StackPanel >
-                <TextBlock FontWeight="Bold">What do you want to achieve?</TextBlock>
-                <TextBlock>Write a wish that motivates you and add a picture. Start writing even without knowing how to achieve it yet</TextBlock>
-                <TextBlock FontWeight="Light">Formulate your desire and write it down</TextBlock>
-                <TextBox Text="{Binding Goal.Title, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <TextBlock FontWeight="Bold">
+                    What do you want to achieve?
+                </TextBlock>
+                <TextBlock>
+                    Write a wish that motivates you and add a picture. Start writing even without knowing how to achieve it yet
+                </TextBlock>
+                <TextBlock FontWeight="Light">
+                    Formulate your desire and write it down
+                </TextBlock>
+                <TextBox Name="TitleTextBox">
+                    <TextBox.Text>
+                        <Binding Path="Goal.Title"
+                                 UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
                 <Button Content="Select Picture" Command="{Binding SelectPictureCommand}"/>
-                <TextBlock FontWeight="Bold">When do you expect to achieve it?</TextBlock>
-                <TextBlock>Recommended terms are 3 month to 3 years. You want it now, not when you are old, don't you?</TextBlock>
-                <TextBlock FontWeight="Light">I want to achieve my goal in</TextBlock>
+                <TextBlock FontWeight="Bold">
+                    When do you expect to achieve it?
+                </TextBlock>
+                <TextBlock>
+                    Recommended terms are 3 month to 3 years. You want it now, not when you are old, don't you?
+                </TextBlock>
+                <TextBlock FontWeight="Light">
+                    I want to achieve my goal in
+                </TextBlock>
                 <DatePicker SelectedDate="{Binding Goal.Deadline}"/>
-                <TextBlock FontWeight="Bold">How can you measure the result?</TextBlock>
-                <TextBlock>You need metrics to track progress. How can you measure it? How do you know the goal is achieved?</TextBlock>
-                <TextBlock FontWeight="Light">How much I want</TextBlock>
-                <TextBox Text="{Binding Goal.Aim, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                <TextBlock FontWeight="Light">Unit of measure</TextBlock>
-                <TextBox Text="{Binding Goal.UnitOfMeasure, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                <TextBlock FontWeight="Light">Description of criteria</TextBlock>
-                <TextBox Text="{Binding Goal.Description, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <TextBlock FontWeight="Bold">
+                    How can you measure the result?
+                </TextBlock>
+                <TextBlock>
+                    You need metrics to track progress. How can you measure it? How do you know the goal is achieved?
+                </TextBlock>
+                <TextBlock FontWeight="Light">
+                    How much I want
+                </TextBlock>
+                <TextBox Name="AimTextBox">
+                    <TextBox.Text>
+                        <Binding Path="Goal.Aim"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validation:IntegerTextBoxValidation/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <Trigger Property="Validation.HasError" Value="True">
+                                    <Setter Property="ToolTip"
+                                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                                                    Path=(Validation.Errors)/ErrorContent}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <TextBlock FontWeight="Light">
+                    Unit of measure
+                </TextBlock>
+                <TextBox Name="UnitTextBox">
+                    <TextBox.Text>
+                        <Binding Path="Goal.UnitOfMeasure"
+                                 UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <TextBlock FontWeight="Light">
+                    Description of criteria
+                </TextBlock>
+                <TextBox Name="DescriptionTextBox">
+                    <TextBox.Text>
+                        <Binding Path="Goal.Description"
+                                 UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </StackPanel>
             <ContentControl Grid.Row="1" Content="{Binding Goal}" ContentTemplate="{StaticResource GoalTemplate}" />
         </Grid>
