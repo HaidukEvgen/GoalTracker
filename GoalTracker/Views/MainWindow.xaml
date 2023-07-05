@@ -7,8 +7,120 @@
         xmlns:models="clr-namespace:GoalTracker.Models"
         xmlns:converters="clr-namespace:GoalTracker.Converters"
         mc:Ignorable="d"
-        Title="Goal Tracker" Height="729" Width="800" Background="#FFC0EFFF" FontFamily="Century Gothic" WindowStartupLocation="CenterScreen">
+        Title="Goal Tracker" Height="830" Width="800" Background="#FFC0EFFF" FontFamily="Century Gothic" WindowStartupLocation="CenterScreen">
     <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,5" />
+        </Style>
+
+        <Style TargetType="ProgressBar">
+            <Setter Property="Margin" Value="0,5" />
+        </Style>
+
+        <DataTemplate x:Key="GoalTemplate" DataType="{x:Type models:Goal}">
+            <Grid>
+                <StackPanel>
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Left" />
+                            <Setter Property="Margin" Value="10, 0, 0, 0" />
+                        </Style>
+                        <Style x:Key="CustomProgressBarStyle" TargetType="ProgressBar">
+                            <Setter Property="Minimum" Value="0"></Setter>
+                            <Setter Property="Maximum" Value="100"></Setter>
+                            <Setter Property="Foreground" Value="Blue" />
+                            <Setter Property="Height" Value="20" />
+                            <Setter Property="Width" Value="380"></Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ProgressBar">
+                                        <Grid x:Name="PART_Track">
+                                            <Rectangle Fill="#CCCCCC" RadiusX="10" RadiusY="10" Opacity="0.5" />
+                                            <Rectangle x:Name="PART_Indicator" HorizontalAlignment="Left" Fill="Blue" RadiusX="10" RadiusY="10" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition MaxHeight="300"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="400"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Viewbox Grid.Column="1" MaxWidth="400" MaxHeight="300">
+                            <Image Source="{Binding Image, Converter={StaticResource ImageConverter}}" Stretch="Uniform" />
+                        </Viewbox>
+                        <Expander Grid.Row="0" Grid.Column="1" VerticalAlignment="Top"
+                                  HorizontalAlignment="Left" Margin="0,10,0,0">
+                            <Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/UI/editingIcon.png" Width="30" Height="30"/>
+                                </StackPanel>
+                            </Expander.Header>
+                            <Expander.Content>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/UI/editingIcon.png" Width="30" Height="30"/>
+                                        <Button FontFamily="Cascadia Mono" FontSize="20">Edit Goal</Button>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/UI/greenTickIcon.png" Width="30" Height="30"/>
+                                        <Button FontFamily="Cascadia Mono" FontSize="20">Goal is achieved</Button>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/UI/redCrossIcon.png" Width="30" Height="30"/>
+                                        <Button FontFamily="Cascadia Mono" FontSize="20">Remove Goal</Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Expander.Content>
+                        </Expander>
+                        <Grid Grid.Row="1" Grid.Column="1">
+                            <StackPanel Margin="0, 20, 0, 0">
+                                <TextBlock Text="{Binding Deadline, Converter={StaticResource DaysLeftConverter}}"
+                                           Style="{StaticResource {x:Type TextBlock}}"
+                                           FontFamily="Cascadia Code Light"/>
+                                <TextBlock Text="{Binding Title}" 
+                                           Style="{StaticResource {x:Type TextBlock}}"
+                                           FontFamily="Cascadia Mono SemiBold"
+                                           FontSize="28"/>
+                                <TextBlock Text="{Binding Description}"
+                                           Style="{StaticResource {x:Type TextBlock}}"
+                                           Margin="10, 10, 0, 0"
+                                           FontFamily="Cascadia Mono ExtraLight"/>
+                                <ProgressBar Value="{Binding Progress, Mode=OneWay}"
+                                             Style="{StaticResource CustomProgressBarStyle}"
+                                             Margin="10, 10, 0, 0"
+                                             HorizontalAlignment="Left"
+                                             Width="355" />
+                                <TextBlock Style="{StaticResource {x:Type TextBlock}}"
+                                           Margin="10, 10, 0, 0"
+                                           FontFamily="Cascadia Mono">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource AimAchievementConverter}">
+                                            <Binding Path="CurrentAchievement" />
+                                            <Binding Path="Aim" />
+                                            <Binding Path="UnitOfMeasure" />
+                                            <Binding Path="Progress" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <Image Source="/UI/addIcon.png" Width="25" Height="25"
+                                       VerticalAlignment="Bottom"
+                                       HorizontalAlignment="Right"
+                                       Margin="0, 0, 5, 5"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
@@ -34,12 +146,28 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
         </Grid>
-        <ScrollViewer Grid.Row="1">
-            <StackPanel x:Name="GoalsStackPanel">
-                <ItemsControl ItemsSource="{Binding Goals}"
-                              ItemTemplate="{StaticResource GoalTemplate}" />
-            </StackPanel>
-        </ScrollViewer>
+        <ListBox Grid.Row="1" ItemsSource="{Binding Goals}"
+                 ItemTemplate="{StaticResource GoalTemplate}"
+                 SelectedItem="{Binding SelectedGoal}">
+            <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border Background="{TemplateBinding Background}">
+                                        <ContentPresenter />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="LightBlue" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
         <Button x:Name="AddGoalButton" Grid.Row="2" Content="Add Goal" FontSize="24" Command="{Binding ShowGoalWindowCommand}"/>
     </Grid>
 </Window>

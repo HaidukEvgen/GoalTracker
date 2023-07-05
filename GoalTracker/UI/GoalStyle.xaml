@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="GoalTracker.UI.GoalStyle"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GoalTracker.UI"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <StackPanel Background="White">
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Left" />
+                    <Setter Property="Margin" Value="10, 0, 0, 0" />
+                </Style>
+                <Style x:Key="CustomProgressBarStyle" TargetType="ProgressBar">
+                    <Setter Property="Minimum" Value="0"></Setter>
+                    <Setter Property="Maximum" Value="100"></Setter>
+                    <Setter Property="Foreground" Value="Blue" />
+                    <Setter Property="Height" Value="20" />
+                    <Setter Property="Width" Value="380"></Setter>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ProgressBar">
+                                <Grid x:Name="PART_Track">
+                                    <Rectangle Fill="#CCCCCC" RadiusX="10" RadiusY="10" Opacity="0.5" />
+                                    <Rectangle x:Name="PART_Indicator" HorizontalAlignment="Left" Fill="Blue" RadiusX="10" RadiusY="10" />
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </StackPanel.Resources>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition MaxHeight="300"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="400"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Viewbox Grid.Column="1" MaxWidth="400" MaxHeight="300">
+                    <Image Source="../Images/goalImage4.jpg" Stretch="Uniform" />
+                </Viewbox>
+                <Expander Grid.Row="0" Grid.Column="1" VerticalAlignment="Top"
+                          HorizontalAlignment="Left" Margin="0,10,0,0">
+                    <Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/UI/editingIcon.png" Width="30" Height="30"/>
+                        </StackPanel>
+                    </Expander.Header>
+                    <Expander.Content>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/UI/editingIcon.png" Width="30" Height="30"/>
+                                <Button FontFamily="Cascadia Mono" FontSize="20">Edit Goal</Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/UI/greenTickIcon.png" Width="30" Height="30"/>
+                                <Button FontFamily="Cascadia Mono" FontSize="20">Goal is achieved</Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/UI/redCrossIcon.png" Width="30" Height="30"/>
+                                <Button FontFamily="Cascadia Mono" FontSize="20">Remove Goal</Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Expander.Content>
+                </Expander>
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <StackPanel Margin="0, 20, 0, 0">
+                        <TextBlock Text="3 month and 4 days left" Style="{StaticResource {x:Type TextBlock}}" FontFamily="Cascadia Code Light" />
+                        <TextBlock Text="Want to become rich" Style="{StaticResource {x:Type TextBlock}}" FontFamily="Cascadia Mono SemiBold" FontSize="28" />
+                        <TextBlock Text="That's how many dollars I want" Style="{StaticResource {x:Type TextBlock}}" Margin="10, 10, 0, 0" FontFamily="Cascadia Mono ExtraLight" />
+                        <ProgressBar Value="50" Style="{StaticResource CustomProgressBarStyle}" Margin="10, 10, 0, 0" HorizontalAlignment="Left" Width="355"/>
+                        <TextBlock Text="50 of 100 Dollars (50%)" Style="{StaticResource {x:Type TextBlock}}" Margin="10, 10, 0, 0" FontFamily="Cascadia Mono" />
+                    </StackPanel>
+                </Grid>
+                <Image Source="/UI/addIcon.png" Width="25" Height="25"
+                           Grid.Row="1" Grid.Column="1"
+                           VerticalAlignment="Bottom"
+                           HorizontalAlignment="Right"
+                           Margin="0, 0, 5, 5"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

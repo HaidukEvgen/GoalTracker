@@ -7,4 +7,20 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="UI\editIcon.png" />
+    <None Remove="UI\editingIcon.png" />
+    <None Remove="UI\goalImage1.png" />
+    <None Remove="UI\greenTickIcon.png" />
+    <None Remove="UI\redCrossIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="UI\editIcon.png" />
+    <Resource Include="UI\editingIcon.png" />
+    <Resource Include="UI\goalImage1.png" />
+    <Resource Include="UI\greenTickIcon.png" />
+    <Resource Include="UI\redCrossIcon.png" />
+  </ItemGroup>
+
 </Project>

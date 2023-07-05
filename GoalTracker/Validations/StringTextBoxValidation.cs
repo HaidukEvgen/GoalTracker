@@ -14,9 +14,9 @@ namespace GoalTracker.Validations
                 return new ValidationResult(false, "String cannot be empty.");
             }
 
-            if (text.Length > 40)
+            if (text.Length > 20)
             {
-                return new ValidationResult(false, "String must be less than 40 characters long.");
+                return new ValidationResult(false, "String must be less than 20 characters long.");
             }
 
             return ValidationResult.ValidResult;
