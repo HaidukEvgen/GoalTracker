@@ -19,6 +19,17 @@ namespace GoalTracker.Models
             CurrentAchievement = goal.CurrentAchievement;
         }
 
+        public Goal(Goal goal, DateTime deadline)
+        {
+            Title = goal.Title;
+            Deadline = deadline;
+            Image = goal.Image;
+            Description = goal.Description;
+            Aim = goal.Aim;
+            UnitOfMeasure = goal.UnitOfMeasure;
+            CurrentAchievement = goal.CurrentAchievement;
+        }
+
         public string Title { get; set; }
 
         public DateTime? Deadline { get; set; }

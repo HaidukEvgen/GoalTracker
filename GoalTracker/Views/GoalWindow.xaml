@@ -7,7 +7,7 @@
         xmlns:validation="clr-namespace:GoalTracker.Validations"
         xmlns:models="clr-namespace:GoalTracker.Models"
         mc:Ignorable="d"
-        Title="GoalWindow" Height="830" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="GoalWindow" Height="830" Width="948" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <Style TargetType="TextBlock">
@@ -94,140 +94,342 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="Add Goal" FontFamily="Century Gothic" FontSize="48" FontWeight="Bold"></TextBlock>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="Add Goal" FontFamily="Cascadia Mono SemiBold" FontSize="53" FontWeight="Bold"></TextBlock>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
         </Grid>
         <Grid Grid.Row="1">
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Left" />
+                </Style>
+                <Style x:Key="PlaceholderTextBoxStyle" TargetType="TextBox">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TextBox">
+                                <Grid>
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="5"/>
+                                    <ScrollViewer x:Name="PART_ContentHost"
+                                                  Margin="5"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Stretch"
+                                                  IsTabStop="False"
+                                                  VerticalScrollBarVisibility="Hidden"
+                                                  HorizontalScrollBarVisibility="Hidden"/>
+                                    <TextBlock x:Name="PlaceholderText"
+                                               Text="{TemplateBinding Tag}"
+                                               Foreground="Gray"
+                                               Margin="7"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left"
+                                               Visibility="Collapsed"/>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="Text" Value=""/>
+                                            <Condition Property="IsKeyboardFocused" Value="False"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter TargetName="PlaceholderText" Property="Visibility" Value="Visible"/>
+                                    </MultiTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style x:Key="RoundButtonStyle" TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="8">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="150"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <StackPanel >
-                <TextBlock FontWeight="Bold">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Margin="10 0 0 0">
+                    <TextBlock
+                           Style="{StaticResource {x:Type TextBlock}}"
+                           FontFamily="Cascadia Mono SemiBold"
+                           FontSize="24" Margin="10,0,0,0">
                     What do you want to achieve?
-                </TextBlock>
-                <TextBlock>
-                    Write a wish that motivates you and add a picture. Start writing even without knowing how to achieve it yet
-                </TextBlock>
-                <TextBlock FontWeight="Light">
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource {x:Type TextBlock}}"
+                           Margin="10, 15, 0, 0"
+                           FontFamily="Cascadia Mono" Height="54"
+                           TextWrapping="Wrap" FontSize="15" Width="411">
+                        Write a wish that motivates you and add a picture.
+                        Start writing even without knowing how to achieve it yet
+                    </TextBlock>
+                    <TextBlock FontFamily="Cascadia Mono Light" FontSize="14"
+                           Margin="10 5 0 0">
                     Formulate your desire and write it down
-                </TextBlock>
-                <TextBox Name="TitleTextBox">
-                    <TextBox.Text>
-                        <Binding Path="Goal.Title"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <validation:StringTextBoxValidation/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                    <TextBox.Style>
-                        <Style TargetType="TextBox">
-                            <Style.Triggers>
-                                <Trigger Property="Validation.HasError" Value="True">
-                                    <Setter Property="ToolTip"
-                                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
-                                                    Path=(Validation.Errors)/ErrorContent}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
-                <Button Content="Select Picture" Command="{Binding SelectPictureCommand}"/>
-                <TextBlock FontWeight="Bold">
+                    </TextBlock>
+                    <TextBox Name="TitleTextBox" Tag="e.g. Buy a car/Build up muscles/Lose weight"
+                         Width="379" FontFamily="Cascadia Mono" HorizontalAlignment="Left"
+                         Margin="10,5,0,0" FontSize="14">
+                        <TextBox.Text>
+                            <Binding Path="Goal.Title" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validation:StringTextBoxValidation/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                        <TextBox.Style>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource PlaceholderTextBoxStyle}" >
+                                <Style.Triggers>
+                                    <Trigger Property="Validation.HasError" Value="True">
+                                        <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+
+                    <Button Content="Select Picture"
+                            Command="{Binding SelectPictureCommand}"
+                            FontFamily="Cascadia Code SemiBold"
+                            FontSize="14"
+                            HorizontalAlignment="Left"
+                            Margin="10,5,0,0"
+                            Height="30"
+                            Width="134"
+                            Style="{StaticResource RoundButtonStyle}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <TextBlock Style="{StaticResource {x:Type TextBlock}}"
+                           FontFamily="Cascadia Mono SemiBold"
+                           FontSize="24">
                     When do you expect to achieve it?
-                </TextBlock>
-                <TextBlock>
+                    </TextBlock>
+                    <TextBlock Margin="0, 15, 0, 0"
+                           FontFamily="Cascadia Mono" Width="405"
+                           TextWrapping="Wrap" FontSize="15">
                     Recommended terms are 3 month to 3 years. You want it now, not when you are old, don't you?
-                </TextBlock>
-                <TextBlock FontWeight="Light">
-                    I want to achieve my goal in
-                </TextBlock>
-                <DatePicker SelectedDate="{Binding Goal.Deadline}"/>
-                <TextBlock FontWeight="Bold">
+                    </TextBlock>
+                    <TextBlock FontFamily="Cascadia Mono Light" FontSize="14"
+                           Margin="0 5 0 0">
+                           I want to achieve my goal in
+                    </TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Name="WeekButton"
+                                Content="Week"
+                                Command="{Binding SetWeekCommand}"
+                                FontFamily="Cascadia Mono Light"
+                                FontSize="14"
+                                Margin="10,5,0,0"
+                                Height="22"
+                                Width="57"
+                                Style="{StaticResource RoundButtonStyle}" />
+                        <Button Name="TwoWeeksButton"
+                                Content="2 Weeks"
+                                Command="{Binding SetTwoWeeksCommand}"
+                                FontFamily="Cascadia Mono Light"
+                                FontSize="14"
+                                Margin="10,5,0,0"
+                                Height="22"
+                                Width="67"
+                                Style="{StaticResource RoundButtonStyle}" />
+                        <Button Name="MonthButton"
+                                Content="Month"
+                                Command="{Binding SetMonthCommand}"
+                                FontFamily="Cascadia Mono Light"
+                                FontSize="14"
+                                Margin="10,5,0,0"
+                                Height="22"
+                                Width="57"
+                                Style="{StaticResource RoundButtonStyle}" />
+                        <Button Name="ThreeMonthsButton"
+                                Content="3 Month"
+                                Command="{Binding SetThreeMonthsCommand}"
+                                FontFamily="Cascadia Mono Light"
+                                FontSize="14"
+                                Margin="10,5,0,0"
+                                Height="22"
+                                Width="67"
+                                Style="{StaticResource RoundButtonStyle}" />
+                        <Button Name="SixMonthsButton"
+                                Content="6 Months"
+                                Command="{Binding SetSixMonthsCommand}"
+                                FontFamily="Cascadia Mono Light"
+                                FontSize="14"
+                                Margin="10,5,0,0"
+                                Height="22"
+                                Width="73"
+                                Style="{StaticResource RoundButtonStyle}" />
+                        <Button Name="YearButton"
+                                Content="Year"
+                                Command="{Binding SetYearCommand}"
+                                FontFamily="Cascadia Mono Light"
+                                FontSize="14"
+                                Margin="10,5,0,0"
+                                Height="22"
+                                Width="57"
+                                Style="{StaticResource RoundButtonStyle}" />
+                    </StackPanel>
+                    <DatePicker SelectedDate="{Binding Goal.Deadline}" 
+                            FontFamily="Cascadia Mono" FontSize="14"
+                            HorizontalAlignment="Left" Margin="0,5,0,0">
+                        <DatePicker.Resources>
+                            <Style TargetType="DatePickerTextBox">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="DatePickerTextBox">
+                                            <TextBox x:Name="PART_TextBox" 
+                                 Background="{TemplateBinding Background}"
+                                 BorderBrush="{TemplateBinding BorderBrush}"
+                                 BorderThickness="{TemplateBinding BorderThickness}"
+                                 IsReadOnly="{TemplateBinding IsReadOnly}"
+                                 Padding="{TemplateBinding Padding}"
+                                 SelectionBrush="{TemplateBinding SelectionBrush}"
+                                 Text="{Binding Path=SelectedDate, 
+                                                RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}, 
+                                                StringFormat='dd.MM.yyyy',
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                 VerticalContentAlignment="Center">
+                                                <TextBox.Style>
+                                                    <Style TargetType="TextBox">
+                                                        <Setter Property="Foreground" Value="Black" />
+                                                        <Style.Triggers>
+                                                            <Trigger Property="IsEnabled" Value="False">
+                                                                <Setter Property="Foreground" Value="Gray" />
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBox.Style>
+                                            </TextBox>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DatePicker.Resources>
+                    </DatePicker>
+                </StackPanel>
+            </Grid>
+            <StackPanel Grid.Row="1" >
+
+                <TextBlock Style="{StaticResource {x:Type TextBlock}}"
+                           FontFamily="Cascadia Mono SemiBold"
+                           FontSize="24" HorizontalAlignment="Center">
                     How can you measure the result?
                 </TextBlock>
-                <TextBlock>
+                <TextBlock Margin="10, 15, 0, 0"
+                           FontFamily="Cascadia Mono"
+                           TextWrapping="Wrap" FontSize="15" Width="381" HorizontalAlignment="Center">
                     You need metrics to track progress. How can you measure it? How do you know the goal is achieved?
                 </TextBlock>
-                <TextBlock FontWeight="Light">
-                    How much I want
-                </TextBlock>
-                <TextBox Name="AimTextBox">
-                    <TextBox.Text>
-                        <Binding Path="Goal.Aim"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <validation:IntegerTextBoxValidation/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                    <TextBox.Style>
-                        <Style TargetType="TextBox">
-                            <Style.Triggers>
-                                <Trigger Property="Validation.HasError" Value="True">
-                                    <Setter Property="ToolTip"
-                                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontFamily="Cascadia Mono Light" FontSize="14"
+                                   Margin="10 5 0 0">
+                            How much I want
+                        </TextBlock>
+                        <TextBox Name="AimTextBox" Tag="100"
+                                 Width="144" FontFamily="Cascadia Mono" HorizontalAlignment="Left"
+                                 Margin="10,5,0,0" FontSize="14">
+                            <TextBox.Text>
+                                <Binding Path="Goal.Aim"
+                                         UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <validation:IntegerTextBoxValidation/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                            <TextBox.Style>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource PlaceholderTextBoxStyle}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Validation.HasError" Value="True">
+                                            <Setter Property="ToolTip"
+                                                    Value="{Binding RelativeSource={x:Static RelativeSource.Self},
                                                     Path=(Validation.Errors)/ErrorContent}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
-                <TextBlock FontWeight="Light">
-                    Unit of measure
-                </TextBlock>
-                <TextBox Name="UnitTextBox">
-                    <TextBox.Text>
-                        <Binding Path="Goal.UnitOfMeasure"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <validation:StringTextBoxValidation/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                    <TextBox.Style>
-                        <Style TargetType="TextBox">
-                            <Style.Triggers>
-                                <Trigger Property="Validation.HasError" Value="True">
-                                    <Setter Property="ToolTip"
-                                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontFamily="Cascadia Mono Light" FontSize="14"
+                                   Margin="10 5 0 0">
+                            Unit of measure
+                        </TextBlock>
+                        <TextBox Name="UnitTextBox" Tag="e.g. Dollars/Users/Orders/Days/Kilograms"
+                                 Width="379" FontFamily="Cascadia Mono" HorizontalAlignment="Left"
+                                 Margin="10,5,0,0" FontSize="14">
+                            <TextBox.Text>
+                                <Binding Path="Goal.UnitOfMeasure"
+                                         UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <validation:StringTextBoxValidation/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                            <TextBox.Style>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource PlaceholderTextBoxStyle}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Validation.HasError" Value="True">
+                                            <Setter Property="ToolTip"
+                                                    Value="{Binding RelativeSource={x:Static RelativeSource.Self},
                                                     Path=(Validation.Errors)/ErrorContent}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
-                <TextBlock FontWeight="Light">
-                    Description of criteria
-                </TextBlock>
-                <TextBox Name="DescriptionTextBox">
-                    <TextBox.Text>
-                        <Binding Path="Goal.Description"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <validation:StringTextBoxValidation/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                    <TextBox.Style>
-                        <Style TargetType="TextBox">
-                            <Style.Triggers>
-                                <Trigger Property="Validation.HasError" Value="True">
-                                    <Setter Property="ToolTip"
-                                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontFamily="Cascadia Mono Light" FontSize="14"
+                                   Margin="10 5 0 0">
+                            Description of criteria (Optional)
+                        </TextBlock>
+                        <TextBox Name="DescriptionTextBox" Tag="e.g. Read/Saved/Done/Learnt/Attached"
+                                 Width="379" FontFamily="Cascadia Mono" HorizontalAlignment="Left"
+                                 Margin="10,5,0,0" FontSize="14">
+                            <TextBox.Text>
+                                <Binding Path="Goal.Description"
+                                         UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <validation:StringTextBoxValidation/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                            <TextBox.Style>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource PlaceholderTextBoxStyle}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Validation.HasError" Value="True">
+                                            <Setter Property="ToolTip"
+                                                    Value="{Binding RelativeSource={x:Static RelativeSource.Self},
                                                     Path=(Validation.Errors)/ErrorContent}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
-            <ScrollViewer Grid.Row="1">
-                <ContentControl Grid.Row="1" Content="{Binding Goal, UpdateSourceTrigger=PropertyChanged}" ContentTemplate="{StaticResource GoalTemplate}" />
+            <ScrollViewer Grid.Row="2">
+                <ContentControl Content="{Binding Goal, UpdateSourceTrigger=PropertyChanged}" ContentTemplate="{StaticResource GoalTemplate}" />
             </ScrollViewer>
         </Grid>
         <Button x:Name="SaveGoalButton" Grid.Row="2" Content="Save Goal" FontSize="24" Command="{Binding SaveGoalCommand}"/>

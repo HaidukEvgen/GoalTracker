@@ -25,7 +25,10 @@ namespace GoalTracker.ViewModels
             {
                 new() { Aim = 9, Description = "caption", Deadline = new DateTime(2024, 7, 12), Image = File.ReadAllBytes(path + "goalImage1.png"), Title = "Title", CurrentAchievement = 3, UnitOfMeasure = "People"},
                 new() { Aim = 50, Description = "caption", Deadline = new DateTime(2023, 12, 12), Image = File.ReadAllBytes(path + "goalImage2.png"), Title = "Another", CurrentAchievement = 13, UnitOfMeasure = "Trainings"},
-                new() { Aim = 1000000, Description = "To earn", Deadline = new DateTime(2023, 07, 04), Image = File.ReadAllBytes(path + "goalImage4.jpg"), Title = "Become rich", CurrentAchievement = 10000, UnitOfMeasure = "Dollars"}
+                new() { Aim = 1000000, Description = "To earn", Deadline = new DateTime(2023, 07, 04), Image = File.ReadAllBytes(path + "goalImage4.jpg"), Title = "Become rich", CurrentAchievement = 10000, UnitOfMeasure = "Dollars"},
+                new() { Aim = 9, Description = "caption", Deadline = new DateTime(2024, 7, 12), Image = File.ReadAllBytes(path + "goalImage2.png"), Title = "Title", CurrentAchievement = 3, UnitOfMeasure = "People"},
+                new() { Aim = 50, Description = "caption", Deadline = new DateTime(2023, 12, 12), Image = File.ReadAllBytes(path + "goalImage4.jpg"), Title = "Another", CurrentAchievement = 13, UnitOfMeasure = "Trainings"},
+                new() { Aim = 1000000, Description = "To earn", Deadline = new DateTime(2023, 07, 04), Image = File.ReadAllBytes(path + "goalImage1.png"), Title = "Become rich", CurrentAchievement = 10000, UnitOfMeasure = "Dollars"}
             };
         }
 
