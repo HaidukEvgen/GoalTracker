@@ -5,15 +5,14 @@ using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Windows;
-using System.Windows.Shapes;
+using GoalTracker.Views;
 using Path = System.IO.Path;
 
 namespace GoalTracker.ViewModels
 {
     class GoalWindowViewModel : ViewModelBase
     {
-        public Goal Goal { get; set; } = new Goal()
+        public Goal Goal { get; set; } = new()
         {
             Deadline = DateTime.Today.AddDays(1),
             Image = File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"..\..\..\Images\goalImage1.png")),
@@ -28,9 +27,11 @@ namespace GoalTracker.ViewModels
         public RelayCommand SetSixMonthsCommand { get; set; }
         public RelayCommand SetYearCommand { get; set; }
 
-        private WindowUsage windowUsage;
+        private readonly WindowUsage windowUsage;
 
-        public GoalWindowViewModel(WindowUsage windowUsage)
+        private readonly GoalWindow goalWindow;
+
+        public GoalWindowViewModel(GoalWindow goalWindow, WindowUsage windowUsage)
         {
             SaveGoalCommand = new RelayCommand(SaveGoal, () => Goal.IsValid());
             SelectPictureCommand = new RelayCommand(SelectPicture);
@@ -41,8 +42,9 @@ namespace GoalTracker.ViewModels
             SetSixMonthsCommand = new RelayCommand(SetSixMonths);
             SetYearCommand = new RelayCommand(SetYear);
             this.windowUsage = windowUsage;
+            this.goalWindow = goalWindow;
         }
-
+        
         private void SetWeek()
         {
             //Goal.Deadline = DateTime.Today.AddDays(7);
@@ -94,6 +96,8 @@ namespace GoalTracker.ViewModels
             {
                 MainViewModel.Goals[MainViewModel.Goals.IndexOf(MainViewModel.SelectedGoal)] = Goal;
             }
+
+            goalWindow.Close();
         }
 
         private void SelectPicture()

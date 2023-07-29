@@ -13,7 +13,7 @@ namespace GoalTracker.Views
             this.windowUsage = windowUsage;
             InitializeComponent();
             Title = windowUsage == WindowUsage.AddingGoal ? "Adding Goal" : "Editing Goal";
-            viewModel = new GoalWindowViewModel(this.windowUsage)
+            viewModel = new GoalWindowViewModel(this, this.windowUsage)
             {
                 MainViewModel = mainViewModel
             };
