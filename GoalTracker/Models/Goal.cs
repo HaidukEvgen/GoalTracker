@@ -60,5 +60,15 @@ namespace GoalTracker.Models
         {
             return true;
         }
+
+        public bool IsCompleted()
+        {
+            return CurrentAchievement >= Aim;
+        }
+
+        public void Achieve()
+        {
+            CurrentAchievement = Aim;
+        }
     }
 }

@@ -5,18 +5,37 @@ using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Reflection;
+using GoalTracker.Converters;
 using GoalTracker.Views;
 using Path = System.IO.Path;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows;
 
 namespace GoalTracker.ViewModels
 {
     class GoalWindowViewModel : ViewModelBase
     {
-        public Goal Goal { get; set; } = new()
+        private UIGoal _goal = new()
         {
             Deadline = DateTime.Today.AddDays(1),
             Image = File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"..\..\..\Images\goalImage1.png")),
         };
+
+        public UIGoal Goal
+        {
+            get => _goal;
+            set
+            {
+                if (_goal != value)
+                {
+                    _goal = value;
+                    OnPropertyChanged();
+                }
+            }
+        } 
         public required MainWindowViewModel MainViewModel { get; set; }
         public RelayCommand SaveGoalCommand { get; set; }
         public RelayCommand SelectPictureCommand { get; set; }
@@ -47,47 +66,40 @@ namespace GoalTracker.ViewModels
         
         private void SetWeek()
         {
-            //Goal.Deadline = DateTime.Today.AddDays(7);
-            Goal = new Goal(Goal, DateTime.Today.AddDays(7));
-            OnPropertyChanged(nameof(Goal));
+            Goal.Deadline = DateTime.Today.AddDays(7);
         }
 
         private void SetTwoWeeks()
         {
-            //Goal.Deadline = DateTime.Today.AddDays(14);
-            Goal = new Goal(Goal, DateTime.Today.AddDays(14));
-            OnPropertyChanged(nameof(Goal));
+            Goal.Deadline = DateTime.Today.AddDays(14);
         }
 
         private void SetMonth()
         {
-            //Goal.Deadline = DateTime.Today.AddMonths(1);
-            Goal = new Goal(Goal, DateTime.Today.AddMonths(1));
-            OnPropertyChanged(nameof(Goal));
+            Goal.Deadline = DateTime.Today.AddMonths(1);
         }
 
         private void SetThreeMonths()
         {
-            //Goal.Deadline = DateTime.Today.AddMonths(3);
-            Goal = new Goal(Goal, DateTime.Today.AddMonths(3));
-            OnPropertyChanged(nameof(Goal));
+            Goal.Deadline = DateTime.Today.AddMonths(3);
         }
         private void SetSixMonths()
         {
-            //Goal.Deadline = DateTime.Today.AddMonths(6);
-            Goal = new Goal(Goal, DateTime.Today.AddMonths(6));
-            OnPropertyChanged(nameof(Goal));
+            Goal.Deadline = DateTime.Today.AddMonths(6);
         }
 
         private void SetYear()
         {
-            //Goal.Deadline = DateTime.Today.AddYears(1);
-            Goal = new Goal(Goal, DateTime.Today.AddYears(1));
-            OnPropertyChanged(nameof(Goal));
+            Goal.Deadline = DateTime.Today.AddYears(1);
         }
 
         private void SaveGoal()
         {
+            if (AnyValidationErrors() || !Goal.IsValid())
+            {
+                MessageBox.Show("Fix all the errors before saving a goal!", "Errors detected", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             if (windowUsage == WindowUsage.AddingGoal)
             {
                 MainViewModel.Goals.Add(Goal);
@@ -108,8 +120,36 @@ namespace GoalTracker.ViewModels
             if (openFileDialog.ShowDialog() == true)
             {
                 byte[] imageData = File.ReadAllBytes(openFileDialog.FileName);
-                Goal = new Goal(Goal, imageData);
-                OnPropertyChanged(nameof(Goal));
+                Goal.Image = imageData;
+            }
+        }
+
+        private bool AnyValidationErrors()
+        {
+            List<Control> invalidControls = new List<Control>();
+
+            // Traverse the visual tree
+            FindInvalidControls(goalWindow, invalidControls);
+
+            // Check if any controls have validation errors
+            return invalidControls.Any(control => Validation.GetHasError(control));
+        }
+
+        private void FindInvalidControls(DependencyObject parent, List<Control> invalidControls)
+        {
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < count; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is Control control && Validation.GetHasError(control))
+                {
+                    invalidControls.Add(control);
+                }
+                else
+                {
+                    FindInvalidControls(child, invalidControls);
+                }
             }
         }
     }

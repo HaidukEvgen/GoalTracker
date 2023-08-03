@@ -11,6 +11,10 @@ namespace GoalTracker.Converters
             if (value is DateTime deadline)
             {
                 DateTime today = DateTime.Today;
+                if (deadline < today)
+                {
+                    return "Deadline has passed";
+                }
                 TimeSpan timeLeft = deadline - today;
 
                 int yearsLeft = deadline.Year - today.Year;

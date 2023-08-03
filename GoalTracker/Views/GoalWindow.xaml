@@ -7,7 +7,7 @@
         xmlns:validation="clr-namespace:GoalTracker.Validations"
         xmlns:models="clr-namespace:GoalTracker.Models"
         mc:Ignorable="d"
-        Title="GoalWindow" Height="797" Width="1000" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="GoalWindow" Height="797" Width="1020" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <Style TargetType="TextBlock">
@@ -18,8 +18,9 @@
         <Style TargetType="ProgressBar">
             <Setter Property="Margin" Value="0,5" />
         </Style>
-        <DataTemplate x:Key="GoalTemplate" DataType="{x:Type models:Goal}">
-            <StackPanel Background="White">
+        <DataTemplate x:Key="GoalTemplate" DataType="{x:Type models:UIGoal}">
+            <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                <StackPanel Background="White">
                 <StackPanel.Resources>
                     <Style TargetType="TextBlock">
                         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -49,7 +50,7 @@
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Viewbox MaxWidth="400" MaxHeight="300">
-                        <Image Source="{Binding Image, Converter={StaticResource ImageConverter}}" Stretch="Uniform" />
+                        <Image Source="{Binding Image, Converter={StaticResource ImageConverter}}" Stretch="Uniform"/>
                     </Viewbox>
                     <Grid Grid.Row="1">
                         <StackPanel Margin="0, 20, 0, 0" HorizontalAlignment="Center">
@@ -85,6 +86,7 @@
                     </Grid>
                 </Grid>
             </StackPanel>
+            </Border>
         </DataTemplate>
     </Window.Resources>
 
@@ -94,7 +96,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="Add Goal" FontFamily="Cascadia Mono SemiBold" FontSize="53" FontWeight="Bold"></TextBlock>
+        <TextBlock Grid.Row="0" Name="FormCaptionTextBlock" HorizontalAlignment="Center" Text="Add Goal" FontFamily="Cascadia Mono SemiBold" FontSize="53" FontWeight="Bold"></TextBlock>
         <Grid Grid.Row="1">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
@@ -331,35 +333,71 @@
                     You need metrics to track progress. How can you measure it? How do you know the goal is achieved?
                         </TextBlock>
                         <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock FontFamily="Cascadia Mono Light" FontSize="14"
-                                   Margin="10 5 0 0">
-                            How much I want
-                                </TextBlock>
-                                <TextBox Name="AimTextBox" Tag="100"
-                                 Width="144" FontFamily="Cascadia Mono" HorizontalAlignment="Left"
-                                 Margin="10,5,0,0" FontSize="14">
-                                    <TextBox.Text>
-                                        <Binding Path="Goal.Aim"
-                                         UpdateSourceTrigger="PropertyChanged">
-                                            <Binding.ValidationRules>
-                                                <validation:IntegerTextBoxValidation/>
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                    </TextBox.Text>
-                                    <TextBox.Style>
-                                        <Style TargetType="TextBox" BasedOn="{StaticResource PlaceholderTextBoxStyle}">
-                                            <Style.Triggers>
-                                                <Trigger Property="Validation.HasError" Value="True">
-                                                    <Setter Property="ToolTip"
-                                                    Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock FontFamily="Cascadia Mono Light" FontSize="14"
+                                               Margin="10 5 0 0">
+                                       How much I achieved
+                                    </TextBlock>
+                                    <TextBox Name="CurrentAchievementTextBox" Tag="0"
+                                            Width="185" FontFamily="Cascadia Mono" HorizontalAlignment="Left"
+                                            Margin="10,5,0,0" FontSize="14">
+                                        <TextBox.Text>
+                                            <Binding Path="Goal.CurrentAchievement"
+                                                    UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.ValidationRules>
+                                                    <validation:IntegerTextBoxValidation/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                        <TextBox.Style>
+                                            <Style TargetType="TextBox" BasedOn="{StaticResource PlaceholderTextBoxStyle}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="Validation.HasError" Value="True">
+                                                        <Setter Property="ToolTip"
+                                                               Value="{Binding RelativeSource={x:Static RelativeSource.Self},
                                                     Path=(Validation.Errors)/ErrorContent}"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBox.Style>
-                                </TextBox>
-                            </StackPanel>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBox.Style>
+                                    </TextBox>
+                                </StackPanel>
+                                <StackPanel  Grid.Column="1" Orientation="Vertical">
+                                   <TextBlock FontFamily="Cascadia Mono Light" FontSize="14"
+                                               Margin="10 5 0 0">
+                                       How much I want
+                                   </TextBlock>
+                                   <TextBox Name="AimTextBox" Tag="100"
+                                            Width="184" FontFamily="Cascadia Mono" HorizontalAlignment="Left"
+                                            Margin="10,5,0,0" FontSize="14">
+                                       <TextBox.Text>
+                                           <Binding Path="Goal.Aim"
+                                                    UpdateSourceTrigger="PropertyChanged">
+                                               <Binding.ValidationRules>
+                                                   <validation:IntegerTextBoxValidation/>
+                                               </Binding.ValidationRules>
+                                           </Binding>
+                                       </TextBox.Text>
+                                       <TextBox.Style>
+                                           <Style TargetType="TextBox" BasedOn="{StaticResource PlaceholderTextBoxStyle}">
+                                               <Style.Triggers>
+                                                   <Trigger Property="Validation.HasError" Value="True">
+                                                       <Setter Property="ToolTip"
+                                                               Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                                                    Path=(Validation.Errors)/ErrorContent}"/>
+                                                   </Trigger>
+                                               </Style.Triggers>
+                                           </Style>
+                                       </TextBox.Style>
+                                   </TextBox>
+                                </StackPanel></Grid>
+                                
                             <StackPanel Orientation="Vertical">
                                 <TextBlock FontFamily="Cascadia Mono Light" FontSize="14"
                                    Margin="10 5 0 0">
@@ -424,7 +462,7 @@
             </Grid>
             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                 <ContentControl Content="{Binding Goal, UpdateSourceTrigger=PropertyChanged}"
-                                ContentTemplate="{StaticResource GoalTemplate}"
+                                ContentTemplate="{StaticResource GoalTemplate}" Margin="0,0,45,0"
                                />
             </StackPanel>
         </Grid>

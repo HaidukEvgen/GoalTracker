@@ -19,7 +19,7 @@
         </Style>
 
         <DataTemplate x:Key="GoalTemplate" DataType="{x:Type models:Goal}">
-            <Border BorderBrush="DarkGray" BorderThickness="0.5" Margin="3">
+            <Border BorderBrush="DarkGray" BorderThickness="0.5">
                 <Grid>
                     <StackPanel>
                         <StackPanel.Resources>
@@ -58,30 +58,6 @@
                             <Viewbox Grid.Column="1" MaxWidth="400" Height="300" Margin="0 10  0 0">
                                 <Image Source="{Binding Image, Converter={StaticResource ImageConverter}}" Stretch="Uniform" />
                             </Viewbox>
-                            <Expander Grid.Row="0" Grid.Column="1" VerticalAlignment="Top"
-                                      HorizontalAlignment="Left" Margin="0,10,0,0">
-                                <Expander.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="/UI/editingIcon.png" Width="30" Height="30"/>
-                                    </StackPanel>
-                                </Expander.Header>
-                                <Expander.Content>
-                                    <StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="/UI/editingIcon.png" Width="30" Height="30"/>
-                                            <Button FontFamily="Cascadia Mono" FontSize="20">Edit Goal</Button>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="/UI/greenTickIcon.png" Width="30" Height="30"/>
-                                            <Button FontFamily="Cascadia Mono" FontSize="20">Goal is achieved</Button>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="/UI/redCrossIcon.png" Width="30" Height="30"/>
-                                            <Button FontFamily="Cascadia Mono" FontSize="20">Remove Goal</Button>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </Expander.Content>
-                            </Expander>
                             <Grid Grid.Row="1" Grid.Column="1">
                                 <StackPanel Margin="0, 20, 0, 0">
                                     <TextBlock Text="{Binding Deadline, Converter={StaticResource DaysLeftConverter}}"
@@ -148,7 +124,10 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
         </Grid>
-        <ListBox Grid.Row="1" ItemsSource="{Binding Goals}" ItemTemplate="{StaticResource GoalTemplate}" SelectedItem="{Binding SelectedGoal}">
+        <ListBox Grid.Row="1"
+                 ItemsSource="{Binding Goals}"
+                 SelectedItem="{Binding SelectedGoal}"
+                 ItemTemplate="{StaticResource GoalTemplate}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="3" />
@@ -159,20 +138,64 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
-                                <Border Background="{TemplateBinding Background}">
+                                <Border x:Name="Border"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
                                     <ContentPresenter />
                                 </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="BorderBrush" Value="DodgerBlue" />
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                        <Setter Property="Background" Value="LightGreen" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsDeadlineMet}" Value="False">
+                                        <Setter Property="Background" Value="LightCoral" />
+                                    </DataTrigger>
+                                </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
-                    <!--<Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="LightBlue" />
-                        </Trigger>
-                    </Style.Triggers>-->
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
+
+        <Expander Grid.Row="1" VerticalAlignment="Top"
+                  HorizontalAlignment="Left" Margin="10,10,0,0"
+                  IsExpanded="True">
+            <Expander.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/UI/editingIcon.png" Width="30" Height="30"/>
+                </StackPanel>
+            </Expander.Header>
+            <Expander.Content>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/UI/editingIcon.png" Width="30" Height="30"/>
+                        <Button Content="Edit selected Goal"
+                                                    FontFamily="Cascadia Mono"
+                                                    FontSize="20"
+                                                    Command="{Binding EditGoalCommand}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0, 1, 0, 1">
+                        <Image Source="/UI/greenTickIcon.png" Width="30" Height="30"/>
+                        <Button Content="Selected goal is achieved"
+                                                    FontFamily="Cascadia Mono"
+                                                    FontSize="20"
+                                                    Command="{Binding GoalIsAchievedCommand}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/UI/redCrossIcon.png" Width="30" Height="30"/>
+                        <Button Content="Remove selected Goal"
+                                                    FontFamily="Cascadia Mono"
+                                                    FontSize="20"
+                                                    Command="{Binding RemoveGoalCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Expander.Content>
+        </Expander>
         <Button x:Name="AddGoalButton" Grid.Row="2" Content="Add Goal" FontSize="24" Command="{Binding ShowGoalWindowCommand}"/>
     </Grid>
 </Window>

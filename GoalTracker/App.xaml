@@ -10,6 +10,7 @@
             <converters:DaysLeftConverter x:Key="DaysLeftConverter" />
             <converters:AimAchievementConverter x:Key="AimAchievementConverter" />
             <converters:ImageConverter x:Key="ImageConverter" />
+            <converters:IsCompletedConverter x:Key="IsCompletedConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
