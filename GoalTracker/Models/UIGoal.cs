@@ -15,7 +15,7 @@ namespace GoalTracker.Models
 
         private string _title;
         public string Title
-        {
+        {   
             get => _title;
             set => SetField(ref _title, value);
         }
@@ -81,8 +81,10 @@ namespace GoalTracker.Models
                 {
                     Progress = 0.0;
                 }
-
-                Progress = (double)CurrentAchievement * 100 / Aim;
+                else
+                {
+                    Progress = (double)CurrentAchievement * 100 / Aim;  
+                }
                 IsCompleted = Progress >= 100;
             }
         }

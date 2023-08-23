@@ -7,7 +7,8 @@
         xmlns:models="clr-namespace:GoalTracker.Models"
         xmlns:converters="clr-namespace:GoalTracker.Converters"
         mc:Ignorable="d"
-        Title="Goal Tracker" Height="830" Width="1347" Background="#FFC0EFFF" FontFamily="Century Gothic" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="Goal Tracker" Height="830" Width="1347" Background="#FFC0EFFF" FontFamily="Century Gothic" WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Closing="MainWindow_OnClosing">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -109,11 +110,11 @@
         </Grid.RowDefinitions>
         <Menu FontFamily="Century Gothic" FontSize="18">
             <MenuItem Header="_File">
-                <MenuItem Header="_New" InputGestureText="Ctrl+N" />
-                <MenuItem Header="_Open" InputGestureText="Ctrl+O" />
+                <MenuItem Header="_New" InputGestureText="Ctrl+N" Command="{Binding NewFileCommand}"/>
+                <MenuItem Header="_Open" InputGestureText="Ctrl+O" Command="{Binding OpenFileCommand}"/>
                 <Separator />
-                <MenuItem Header="_Save" InputGestureText="Ctrl+S" />
-                <MenuItem Header="Save _As" InputGestureText="Ctrl+Shift+S" />
+                <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveFileCommand}"/>
+                <MenuItem Header="Save _As" InputGestureText="Ctrl+Shift+S" Command="{Binding SaveAsFileCommand}"/>
                 <Separator />
                 <MenuItem Header="_Exit" InputGestureText="Alt+F4" />
             </MenuItem>

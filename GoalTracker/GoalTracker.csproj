@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="UI\editIcon.png" />
     <Resource Include="UI\editingIcon.png" />
     <Resource Include="UI\goalImage1.png" />
