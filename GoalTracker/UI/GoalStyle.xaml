@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GoalTracker.UI"
+             xmlns:validations="clr-namespace:GoalTracker.Validations"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -75,13 +76,12 @@
                         <TextBlock Text="That's how many dollars I want" Style="{StaticResource {x:Type TextBlock}}" Margin="10, 10, 0, 0" FontFamily="Cascadia Mono ExtraLight" />
                         <ProgressBar Value="50" Style="{StaticResource CustomProgressBarStyle}" Margin="10, 10, 0, 0" HorizontalAlignment="Left" Width="355"/>
                         <TextBlock Text="50 of 100 Dollars (50%)" Style="{StaticResource {x:Type TextBlock}}" Margin="10, 10, 0, 0" FontFamily="Cascadia Mono" />
+                        <Image Source="/UI/addIcon.png" Width="25" Height="25"
+                                   VerticalAlignment="Bottom"
+                                   HorizontalAlignment="Left"
+                                   Margin="10, 5, 0, 0"/>
                     </StackPanel>
                 </Grid>
-                <Image Source="/UI/addIcon.png" Width="25" Height="25"
-                           Grid.Row="1" Grid.Column="1"
-                           VerticalAlignment="Bottom"
-                           HorizontalAlignment="Right"
-                           Margin="0, 0, 5, 5"/>
             </Grid>
         </StackPanel>
     </Grid>

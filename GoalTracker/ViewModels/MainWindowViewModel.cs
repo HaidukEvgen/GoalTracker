@@ -40,15 +40,7 @@ namespace GoalTracker.ViewModels
         {
             ShowGoalWindowCommand = new RelayCommand(ShowGoalWindow);
             string path = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"..\..\..\Images\");
-            Goals = new ObservableCollection<UIGoal>
-            {
-                new() { Aim = 9, Description = "caption", Deadline = new DateTime(2024, 7, 12), Image = File.ReadAllBytes(path + "goalImage1.png"), Title = "Title", CurrentAchievement = 9, UnitOfMeasure = "People"},
-                new() { Aim = 50, Description = "caption", Deadline = new DateTime(2023, 12, 12), Image = File.ReadAllBytes(path + "goalImage2.png"), Title = "Another", CurrentAchievement = 13, UnitOfMeasure = "Trainings"},
-                new() { Aim = 1000000, Description = "To earn", Deadline = new DateTime(2023, 07, 04), Image = File.ReadAllBytes(path + "goalImage3.jpg"), Title = "Become rich", CurrentAchievement = 10000, UnitOfMeasure = "Dollars"},
-                new() { Aim = 9, Description = "caption", Deadline = new DateTime(2024, 7, 12), Image = File.ReadAllBytes(path + "goalImage2.png"), Title = "Title", CurrentAchievement = 3, UnitOfMeasure = "People"},
-                new() { Aim = 50, Description = "caption", Deadline = new DateTime(2023, 12, 12), Image = File.ReadAllBytes(path + "goalImage3.jpg"), Title = "Another", CurrentAchievement = 13, UnitOfMeasure = "Trainings"},
-                new() { Aim = 1000000, Description = "To earn", Deadline = new DateTime(2023, 07, 04), Image = File.ReadAllBytes(path + "goalImage1.png"), Title = "Become rich", CurrentAchievement = 10000, UnitOfMeasure = "Dollars"}
-            };
+            Goals = new ObservableCollection<UIGoal>();
             _fileSaver = new FileSaver(Goals);
             EditGoalCommand = new RelayCommand(EditGoal);
             GoalIsAchievedCommand = new RelayCommand(GoalIsAchieved);
